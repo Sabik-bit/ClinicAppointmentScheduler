@@ -89,3 +89,40 @@ else
 {
     Console.WriteLine("Appointment not found.");
 }
+Console.WriteLine("\nDoctor Management:");
+
+DoctorService doctorService = new DoctorService();
+
+Doctor doctor1 = new Doctor(
+    1,
+    "Dr Taylor",
+    "General Practice");
+
+Doctor doctor2 = new Doctor(
+    2,
+    "Dr Wilson",
+    "Cardiology");
+
+doctorService.AddDoctor(doctor1);
+doctorService.AddDoctor(doctor2);
+
+Console.WriteLine("\nRegistered Doctors:");
+
+foreach (Doctor currentDoctor in doctorService.GetAllDoctors())
+{
+    Console.WriteLine(currentDoctor);
+}
+
+
+Console.WriteLine("\nSearching for Doctor ID 2:");
+
+Doctor? foundDoctor = doctorService.FindDoctor(2);
+
+if (foundDoctor != null)
+{
+    Console.WriteLine($"Doctor found: {foundDoctor.FullName}");
+}
+else
+{
+    Console.WriteLine("Doctor not found.");
+}
