@@ -1,35 +1,43 @@
 using ClinicAppointmentScheduler.Models;
+using ClinicAppointmentScheduler.Services;
 
 Console.WriteLine("=================================");
 Console.WriteLine("   Clinic Appointment Scheduler");
 Console.WriteLine("=================================");
-Console.WriteLine();
 
-Patient patient = new Patient(
+PatientService patientService = new PatientService();
+
+Patient patient1 = new Patient(
     1,
     "Alex Smith",
     "0400000000",
     "alex@example.com");
 
-Doctor doctor = new Doctor(
-    1,
-    "Dr Taylor",
-    "General Practice");
+Patient patient2 = new Patient(
+    2,
+    "Emma Brown",
+    "0411111111",
+    "emma@example.com");
 
-Appointment appointment = new Appointment(
-    1,
-    patient,
-    doctor,
-    DateTime.Today.AddDays(1).AddHours(10),
-    "General consultation");
+patientService.AddPatient(patient1);
+patientService.AddPatient(patient2);
 
-Console.WriteLine("Patient:");
-Console.WriteLine(patient);
-Console.WriteLine();
+Console.WriteLine("\nRegistered Patients:");
 
-Console.WriteLine("Doctor:");
-Console.WriteLine(doctor);
-Console.WriteLine();
+foreach (Patient patient in patientService.GetAllPatients())
+{
+    Console.WriteLine(patient);
+}
 
-Console.WriteLine("Appointment:");
-Console.WriteLine(appointment);
+Console.WriteLine("\nSearching for Patient ID 2:");
+
+Patient? foundPatient = patientService.FindPatient(2);
+
+if (foundPatient != null)
+{
+    Console.WriteLine($"Patient found: {foundPatient.FullName}");
+}
+else
+{
+    Console.WriteLine("Patient not found.");
+}
