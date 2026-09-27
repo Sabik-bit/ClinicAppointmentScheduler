@@ -24,6 +24,29 @@ public class AppointmentService
         appointments.Add(appointment);
     }
 
+    public bool RescheduleAppointment(int appointmentId, DateTime newDateTime)
+{
+    Appointment? appointment = FindAppointment(appointmentId);
+
+    if (appointment == null)
+    {
+        return false;
+    }
+
+    if (appointments.Any(a =>
+        a.AppointmentId != appointmentId &&
+        a.Doctor.DoctorId == appointment.Doctor.DoctorId &&
+        a.AppointmentDateTime == newDateTime &&
+        a.Status != "Cancelled"))
+    {
+        throw new InvalidOperationException(
+            "Doctor already has an appointment at this time.");
+    }
+
+    appointment.AppointmentDateTime = newDateTime;
+    return true;
+}
+
     public List<Appointment> GetAllAppointments()
     {
         return appointments;

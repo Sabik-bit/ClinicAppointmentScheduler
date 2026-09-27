@@ -75,7 +75,21 @@ if (foundAppointment != null)
 {
     Console.WriteLine($"Appointment found: {foundAppointment}");
 }
+Console.WriteLine("\nRescheduling Appointment ID 1:");
 
+DateTime newDateTime = new DateTime(2026, 9, 22, 11, 0, 0);
+
+bool rescheduled = appointmentService.RescheduleAppointment(1, newDateTime);
+
+if (rescheduled)
+{
+    Console.WriteLine("Appointment rescheduled successfully.");
+    Console.WriteLine($"New appointment time: {appointment1.AppointmentDateTime}");
+}
+else
+{
+    Console.WriteLine("Appointment not found.");
+}
 Console.WriteLine("\nCancelling Appointment ID 1:");
 
 bool cancelled = appointmentService.CancelAppointment(1);
