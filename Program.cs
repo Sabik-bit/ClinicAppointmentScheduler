@@ -5,6 +5,10 @@ Console.WriteLine("=================================");
 Console.WriteLine("   Clinic Appointment Scheduler");
 Console.WriteLine("=================================");
 
+// =====================================
+// PATIENT MANAGEMENT
+// =====================================
+
 PatientService patientService = new PatientService();
 
 Patient patient1 = new Patient(
@@ -42,6 +46,11 @@ else
     Console.WriteLine("Patient not found.");
 }
 
+
+// =====================================
+// APPOINTMENT MANAGEMENT
+// =====================================
+
 Console.WriteLine("\nAppointment Management:");
 
 AppointmentService appointmentService = new AppointmentService();
@@ -67,32 +76,73 @@ foreach (Appointment appointment in appointmentService.GetAllAppointments())
     Console.WriteLine(appointment);
 }
 
+
+// =====================================
+// FIND APPOINTMENT
+// =====================================
+
 Console.WriteLine("\nSearching for Appointment ID 1:");
 
-Appointment? foundAppointment = appointmentService.FindAppointment(1);
+Appointment? foundAppointment =
+    appointmentService.FindAppointment(1);
 
 if (foundAppointment != null)
 {
     Console.WriteLine($"Appointment found: {foundAppointment}");
 }
+else
+{
+    Console.WriteLine("Appointment not found.");
+}
+
+
+// =====================================
+// FIND APPOINTMENTS BY PATIENT
+// =====================================
+
+Console.WriteLine("\nAppointments for Patient ID 1:");
+
+List<Appointment> patientAppointments =
+    appointmentService.GetAppointmentsByPatient(1);
+
+foreach (Appointment appointment in patientAppointments)
+{
+    Console.WriteLine(appointment);
+}
+
+
+// =====================================
+// RESCHEDULE APPOINTMENT
+// =====================================
+
 Console.WriteLine("\nRescheduling Appointment ID 1:");
 
-DateTime newDateTime = new DateTime(2026, 9, 22, 11, 0, 0);
+DateTime newDateTime =
+    new DateTime(2026, 9, 22, 11, 0, 0);
 
-bool rescheduled = appointmentService.RescheduleAppointment(1, newDateTime);
+bool rescheduled =
+    appointmentService.RescheduleAppointment(1, newDateTime);
 
 if (rescheduled)
 {
     Console.WriteLine("Appointment rescheduled successfully.");
-    Console.WriteLine($"New appointment time: {appointment1.AppointmentDateTime}");
+    Console.WriteLine(
+        $"New appointment time: {appointment1.AppointmentDateTime}");
 }
 else
 {
     Console.WriteLine("Appointment not found.");
 }
+
+
+// =====================================
+// CANCEL APPOINTMENT
+// =====================================
+
 Console.WriteLine("\nCancelling Appointment ID 1:");
 
-bool cancelled = appointmentService.CancelAppointment(1);
+bool cancelled =
+    appointmentService.CancelAppointment(1);
 
 if (cancelled)
 {
@@ -103,6 +153,12 @@ else
 {
     Console.WriteLine("Appointment not found.");
 }
+
+
+// =====================================
+// DOCTOR MANAGEMENT
+// =====================================
+
 Console.WriteLine("\nDoctor Management:");
 
 DoctorService doctorService = new DoctorService();
@@ -128,9 +184,14 @@ foreach (Doctor currentDoctor in doctorService.GetAllDoctors())
 }
 
 
+// =====================================
+// FIND DOCTOR
+// =====================================
+
 Console.WriteLine("\nSearching for Doctor ID 2:");
 
-Doctor? foundDoctor = doctorService.FindDoctor(2);
+Doctor? foundDoctor =
+    doctorService.FindDoctor(2);
 
 if (foundDoctor != null)
 {
@@ -140,3 +201,7 @@ else
 {
     Console.WriteLine("Doctor not found.");
 }
+
+Console.WriteLine("\n=================================");
+Console.WriteLine("       Program Completed");
+Console.WriteLine("=================================");

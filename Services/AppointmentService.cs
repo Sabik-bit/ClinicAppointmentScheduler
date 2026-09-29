@@ -58,6 +58,12 @@ public class AppointmentService
             appointment => appointment.AppointmentId == appointmentId);
     }
 
+public List<Appointment> GetAppointmentsByPatient(int patientId)
+{
+    return appointments
+        .Where(appointment => appointment.Patient.PatientId == patientId)
+        .ToList();
+}
     public bool CancelAppointment(int appointmentId)
     {
         Appointment? appointment = FindAppointment(appointmentId);
