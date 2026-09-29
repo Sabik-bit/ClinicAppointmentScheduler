@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace GUI;
 
@@ -8,112 +10,268 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        ShowDashboard();
     }
 
-    // Open Patient Management
-    private void PatientsButton_Click(object? sender, RoutedEventArgs e)
+    // =========================
+    // NAVIGATION
+    // =========================
+
+    private void HideAllPanels()
     {
         DashboardPanel.IsVisible = false;
-        PatientsPanel.IsVisible = true;
-
-        Title = "Clinic Appointment Scheduler - Patients";
+        PatientsPanel.IsVisible = false;
+        DoctorsPanel.IsVisible = false;
+        AppointmentsPanel.IsVisible = false;
     }
 
-    // Return to Dashboard
-    private void DashboardButton_Click(object? sender, RoutedEventArgs e)
+    private void ShowDashboard()
     {
-        PatientsPanel.IsVisible = false;
-        DashboardPanel.IsVisible = true;
+        HideAllPanels();
 
+        DashboardPanel.IsVisible = true;
         Title = "Clinic Appointment Scheduler";
     }
 
-    // Add a new patient
+    private void DashboardButton_Click(object? sender, RoutedEventArgs e)
+    {
+        ShowDashboard();
+    }
+
+    private void PatientsButton_Click(object? sender, RoutedEventArgs e)
+    {
+        HideAllPanels();
+
+        PatientsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Patients";
+    }
+
+    private void DoctorsButton_Click(object? sender, RoutedEventArgs e)
+    {
+        HideAllPanels();
+
+        DoctorsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Doctors";
+    }
+
+    private void AppointmentsButton_Click(object? sender, RoutedEventArgs e)
+    {
+        HideAllPanels();
+
+        AppointmentsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Appointments";
+    }
+
+    // =========================
+    // ADD PATIENT
+    // =========================
+
     private void AddPatientButton_Click(object? sender, RoutedEventArgs e)
     {
-        string patientId = PatientIdTextBox.Text?.Trim() ?? "";
-        string patientName = PatientNameTextBox.Text?.Trim() ?? "";
-        string patientPhone = PatientPhoneTextBox.Text?.Trim() ?? "";
-        string patientEmail = PatientEmailTextBox.Text?.Trim() ?? "";
+        string patientId = PatientIdTextBox.Text ?? "";
+        string patientName = PatientNameTextBox.Text ?? "";
+        string patientPhone = PatientPhoneTextBox.Text ?? "";
+        string patientEmail = PatientEmailTextBox.Text ?? "";
 
-        // Check empty fields
-        if (string.IsNullOrWhiteSpace(patientId) ||
-            string.IsNullOrWhiteSpace(patientName) ||
-            string.IsNullOrWhiteSpace(patientPhone) ||
-            string.IsNullOrWhiteSpace(patientEmail))
-        {
-            PatientStatusText.Text = "Please complete all patient fields.";
-            PatientStatusText.Foreground =
-                Avalonia.Media.Brushes.Red;
-
-            return;
-        }
-
-        // Check Patient ID
-        if (!int.TryParse(patientId, out int id))
+        if (patientId == "" || patientName == "")
         {
             PatientStatusText.Text =
-                "Patient ID must be a number.";
+                "Please enter Patient ID and Full Name.";
 
-            PatientStatusText.Foreground =
-                Avalonia.Media.Brushes.Red;
-
+            PatientStatusText.Foreground = Brushes.Red;
             return;
         }
 
-        // Hide default message
         NoPatientsText.IsVisible = false;
-
-        // Create patient display
-        Border patientCard = new Border
-        {
-            Background = Avalonia.Media.Brushes.White,
-            CornerRadius = new Avalonia.CornerRadius(6),
-            Padding = new Avalonia.Thickness(12),
-            Margin = new Avalonia.Thickness(0, 3)
-        };
 
         StackPanel patientInformation = new StackPanel
         {
             Spacing = 4
         };
 
-        TextBlock nameText = new TextBlock
+        patientInformation.Children.Add(new TextBlock
         {
-            Text = $"{patientName} (ID: {id})",
-            FontWeight = Avalonia.Media.FontWeight.Bold,
-            Foreground = Avalonia.Media.Brushes.DarkSlateGray
-        };
+            Text = patientName + " (ID: " + patientId + ")",
+            FontWeight = FontWeight.Bold,
+            Foreground = Brushes.Black
+        });
 
-        TextBlock phoneText = new TextBlock
+        patientInformation.Children.Add(new TextBlock
         {
-            Text = $"Phone: {patientPhone}"
-        };
+            Text = "Phone: " + patientPhone,
+            Foreground = Brushes.Black
+        });
 
-        TextBlock emailText = new TextBlock
+        patientInformation.Children.Add(new TextBlock
         {
-            Text = $"Email: {patientEmail}"
+            Text = "Email: " + patientEmail,
+            Foreground = Brushes.Black
+        });
+
+        Border patientCard = new Border
+        {
+            Background = Brushes.White,
+            CornerRadius = new CornerRadius(6),
+            Padding = new Thickness(12),
+            Margin = new Thickness(0, 4),
+            Child = patientInformation
         };
-
-        patientInformation.Children.Add(nameText);
-        patientInformation.Children.Add(phoneText);
-        patientInformation.Children.Add(emailText);
-
-        patientCard.Child = patientInformation;
 
         PatientListPanel.Children.Add(patientCard);
 
-        // Success message
         PatientStatusText.Text =
-            $"Patient '{patientName}' added successfully.";
+            "Patient '" + patientName + "' added successfully.";
 
-        PatientStatusText.Foreground =
-            Avalonia.Media.Brushes.Green;
+        PatientStatusText.Foreground = Brushes.Green;
 
-        // Clear fields
         PatientIdTextBox.Text = "";
         PatientNameTextBox.Text = "";
         PatientPhoneTextBox.Text = "";
         PatientEmailTextBox.Text = "";
+    }
+
+    // =========================
+    // ADD DOCTOR
+    // =========================
+
+    private void AddDoctorButton_Click(object? sender, RoutedEventArgs e)
+    {
+        string doctorId = DoctorIdTextBox.Text ?? "";
+        string doctorName = DoctorNameTextBox.Text ?? "";
+        string speciality = DoctorSpecialityTextBox.Text ?? "";
+
+        if (doctorId == "" || doctorName == "")
+        {
+            DoctorStatusText.Text =
+                "Please enter Doctor ID and Doctor Name.";
+
+            DoctorStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        NoDoctorsText.IsVisible = false;
+
+        StackPanel doctorInformation = new StackPanel
+        {
+            Spacing = 4
+        };
+
+        doctorInformation.Children.Add(new TextBlock
+        {
+            Text = doctorName + " (ID: " + doctorId + ")",
+            FontWeight = FontWeight.Bold,
+            Foreground = Brushes.Black
+        });
+
+        doctorInformation.Children.Add(new TextBlock
+        {
+            Text = "Speciality: " + speciality,
+            Foreground = Brushes.Black
+        });
+
+        Border doctorCard = new Border
+        {
+            Background = Brushes.White,
+            CornerRadius = new CornerRadius(6),
+            Padding = new Thickness(12),
+            Margin = new Thickness(0, 4),
+            Child = doctorInformation
+        };
+
+        DoctorListPanel.Children.Add(doctorCard);
+
+        DoctorStatusText.Text =
+            "Doctor '" + doctorName + "' added successfully.";
+
+        DoctorStatusText.Foreground = Brushes.Green;
+
+        DoctorIdTextBox.Text = "";
+        DoctorNameTextBox.Text = "";
+        DoctorSpecialityTextBox.Text = "";
+    }
+
+    // =========================
+    // ADD APPOINTMENT
+    // =========================
+
+    private void AddAppointmentButton_Click(object? sender, RoutedEventArgs e)
+    {
+        string appointmentId =
+            AppointmentIdTextBox.Text ?? "";
+
+        string patientName =
+            AppointmentPatientTextBox.Text ?? "";
+
+        string doctorName =
+            AppointmentDoctorTextBox.Text ?? "";
+
+        string appointmentDate =
+            AppointmentDateTextBox.Text ?? "";
+
+        if (appointmentId == "" ||
+            patientName == "" ||
+            doctorName == "" ||
+            appointmentDate == "")
+        {
+            AppointmentStatusText.Text =
+                "Please complete all appointment fields.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        NoAppointmentsText.IsVisible = false;
+
+        StackPanel appointmentInformation = new StackPanel
+        {
+            Spacing = 4
+        };
+
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Appointment ID: " + appointmentId,
+            FontWeight = FontWeight.Bold,
+            Foreground = Brushes.Black
+        });
+
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Patient: " + patientName,
+            Foreground = Brushes.Black
+        });
+
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Doctor: " + doctorName,
+            Foreground = Brushes.Black
+        });
+
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Date: " + appointmentDate,
+            Foreground = Brushes.Black
+        });
+
+        Border appointmentCard = new Border
+        {
+            Background = Brushes.White,
+            CornerRadius = new CornerRadius(6),
+            Padding = new Thickness(12),
+            Margin = new Thickness(0, 4),
+            Child = appointmentInformation
+        };
+
+        AppointmentListPanel.Children.Add(appointmentCard);
+
+        AppointmentStatusText.Text =
+            "Appointment added successfully.";
+
+        AppointmentStatusText.Foreground = Brushes.Green;
+
+        AppointmentIdTextBox.Text = "";
+        AppointmentPatientTextBox.Text = "";
+        AppointmentDoctorTextBox.Text = "";
+        AppointmentDateTextBox.Text = "";
     }
 }
