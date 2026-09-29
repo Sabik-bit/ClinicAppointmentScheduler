@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using System;
 
 namespace GUI;
 
@@ -209,6 +210,7 @@ public partial class MainWindow : Window
         string appointmentDate =
             AppointmentDateTextBox.Text ?? "";
 
+        // Check if all fields are completed
         if (appointmentId == "" ||
             patientName == "" ||
             doctorName == "" ||
@@ -216,6 +218,18 @@ public partial class MainWindow : Window
         {
             AppointmentStatusText.Text =
                 "Please complete all appointment fields.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        // Check if the date entered is valid
+        DateTime validDate;
+
+        if (!DateTime.TryParse(appointmentDate, out validDate))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid appointment date.";
 
             AppointmentStatusText.Foreground = Brushes.Red;
             return;
@@ -249,7 +263,7 @@ public partial class MainWindow : Window
 
         appointmentInformation.Children.Add(new TextBlock
         {
-            Text = "Date: " + appointmentDate,
+            Text = "Date: " + validDate.ToShortDateString(),
             Foreground = Brushes.Black
         });
 
