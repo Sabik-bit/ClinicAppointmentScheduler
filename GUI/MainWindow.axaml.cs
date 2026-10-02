@@ -89,7 +89,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check duplicate patient ID
         if (patientIds.Contains(patientId))
         {
             PatientStatusText.Text =
@@ -99,7 +98,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Save the new ID
         patientIds.Add(patientId);
 
         NoPatientsText.IsVisible = false;
@@ -169,7 +167,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check duplicate doctor ID
         if (doctorIds.Contains(doctorId))
         {
             DoctorStatusText.Text =
@@ -179,7 +176,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Save the new ID
         doctorIds.Add(doctorId);
 
         NoDoctorsText.IsVisible = false;
@@ -241,10 +237,15 @@ public partial class MainWindow : Window
         string appointmentDate =
             AppointmentDateTextBox.Text?.Trim() ?? "";
 
+        string appointmentTime =
+            AppointmentTimeTextBox.Text?.Trim() ?? "";
+
+        // Check required fields
         if (appointmentId == "" ||
             patientName == "" ||
             doctorName == "" ||
-            appointmentDate == "")
+            appointmentDate == "" ||
+            appointmentTime == "")
         {
             AppointmentStatusText.Text =
                 "Please complete all appointment fields.";
@@ -253,7 +254,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check duplicate appointment ID
+        // Check duplicate ID
         if (appointmentIds.Contains(appointmentId))
         {
             AppointmentStatusText.Text =
@@ -263,7 +264,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check appointment date
+        // Check date
         DateTime validDate;
 
         if (!DateTime.TryParse(appointmentDate, out validDate))
@@ -275,7 +276,18 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Save the new appointment ID
+        // Check time
+        DateTime validTime;
+
+        if (!DateTime.TryParse(appointmentTime, out validTime))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid appointment time.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
         appointmentIds.Add(appointmentId);
 
         NoAppointmentsText.IsVisible = false;
@@ -310,6 +322,12 @@ public partial class MainWindow : Window
             Foreground = Brushes.Black
         });
 
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Time: " + validTime.ToShortTimeString(),
+            Foreground = Brushes.Black
+        });
+
         Border appointmentCard = new Border
         {
             Background = Brushes.White,
@@ -330,5 +348,6 @@ public partial class MainWindow : Window
         AppointmentPatientTextBox.Text = "";
         AppointmentDoctorTextBox.Text = "";
         AppointmentDateTextBox.Text = "";
+        AppointmentTimeTextBox.Text = "";
     }
 }

@@ -20,8 +20,7 @@
         </Border>
 
         <!-- MAIN AREA -->
-        <Grid Grid.Row="1"
-              ColumnDefinitions="220,*">
+        <Grid Grid.Row="1" ColumnDefinitions="220,*">
 
             <!-- LEFT MENU -->
             <Border Grid.Column="0"
@@ -75,10 +74,7 @@
             <!-- RIGHT CONTENT -->
             <Grid Grid.Column="1">
 
-                <!-- ===================== -->
                 <!-- DASHBOARD -->
-                <!-- ===================== -->
-
                 <StackPanel x:Name="DashboardPanel"
                             Margin="30"
                             Spacing="20">
@@ -113,73 +109,59 @@
 
                     </Border>
 
-                    <Grid ColumnDefinitions="*,*,*"
-                          ColumnSpacing="15">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15">
 
                         <Border Grid.Column="0"
                                 Background="#EFF6FF"
                                 CornerRadius="8"
                                 Padding="15">
-
                             <StackPanel>
                                 <TextBlock Text="Patients"
                                            FontWeight="Bold"
                                            Foreground="#1E40AF"/>
-
                                 <TextBlock Text="Manage patient records"
                                            Foreground="#475569"
                                            FontSize="13"/>
                             </StackPanel>
-
                         </Border>
 
                         <Border Grid.Column="1"
                                 Background="#F0FDF4"
                                 CornerRadius="8"
                                 Padding="15">
-
                             <StackPanel>
                                 <TextBlock Text="Doctors"
                                            FontWeight="Bold"
                                            Foreground="#166534"/>
-
                                 <TextBlock Text="Manage clinic doctors"
                                            Foreground="#475569"
                                            FontSize="13"/>
                             </StackPanel>
-
                         </Border>
 
                         <Border Grid.Column="2"
                                 Background="#FFF7ED"
                                 CornerRadius="8"
                                 Padding="15">
-
                             <StackPanel>
                                 <TextBlock Text="Appointments"
                                            FontWeight="Bold"
                                            Foreground="#9A3412"/>
-
                                 <TextBlock Text="Schedule appointments"
                                            Foreground="#475569"
                                            FontSize="13"/>
                             </StackPanel>
-
                         </Border>
 
                     </Grid>
 
                 </StackPanel>
 
-                <!-- ===================== -->
                 <!-- PATIENTS -->
-                <!-- ===================== -->
-
                 <ScrollViewer x:Name="PatientsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30"
-                                Spacing="15">
+                    <StackPanel Margin="30" Spacing="15">
 
                         <TextBlock Text="Patient Management"
                                    FontSize="28"
@@ -204,22 +186,18 @@
                                            Foreground="#1E293B"/>
 
                                 <TextBlock Text="Patient ID"/>
-
                                 <TextBox x:Name="PatientIdTextBox"
                                          PlaceholderText="Enter patient ID"/>
 
                                 <TextBlock Text="Full Name"/>
-
                                 <TextBox x:Name="PatientNameTextBox"
                                          PlaceholderText="Enter full name"/>
 
                                 <TextBlock Text="Phone"/>
-
                                 <TextBox x:Name="PatientPhoneTextBox"
                                          PlaceholderText="Enter phone number"/>
 
                                 <TextBlock Text="Email"/>
-
                                 <TextBox x:Name="PatientEmailTextBox"
                                          PlaceholderText="Enter email address"/>
 
@@ -261,15 +239,11 @@
 
                 </ScrollViewer>
 
-                <!-- ===================== -->
                 <!-- DOCTORS -->
-                <!-- ===================== -->
-
                 <ScrollViewer x:Name="DoctorsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30"
-                                Spacing="15">
+                    <StackPanel Margin="30" Spacing="15">
 
                         <TextBlock Text="Doctor Management"
                                    FontSize="28"
@@ -294,17 +268,14 @@
                                            Foreground="#1E293B"/>
 
                                 <TextBlock Text="Doctor ID"/>
-
                                 <TextBox x:Name="DoctorIdTextBox"
                                          PlaceholderText="Enter doctor ID"/>
 
                                 <TextBlock Text="Doctor Name"/>
-
                                 <TextBox x:Name="DoctorNameTextBox"
                                          PlaceholderText="Enter doctor name"/>
 
                                 <TextBlock Text="Speciality"/>
-
                                 <TextBox x:Name="DoctorSpecialityTextBox"
                                          PlaceholderText="Enter speciality"/>
 
@@ -346,15 +317,11 @@
 
                 </ScrollViewer>
 
-                <!-- ===================== -->
                 <!-- APPOINTMENTS -->
-                <!-- ===================== -->
-
                 <ScrollViewer x:Name="AppointmentsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30"
-                                Spacing="15">
+                    <StackPanel Margin="30" Spacing="15">
 
                         <TextBlock Text="Appointment Management"
                                    FontSize="28"
@@ -379,24 +346,24 @@
                                            Foreground="#1E293B"/>
 
                                 <TextBlock Text="Appointment ID"/>
-
                                 <TextBox x:Name="AppointmentIdTextBox"
                                          PlaceholderText="Enter appointment ID"/>
 
                                 <TextBlock Text="Patient Name"/>
-
                                 <TextBox x:Name="AppointmentPatientTextBox"
                                          PlaceholderText="Enter patient name"/>
 
                                 <TextBlock Text="Doctor Name"/>
-
                                 <TextBox x:Name="AppointmentDoctorTextBox"
                                          PlaceholderText="Enter doctor name"/>
 
                                 <TextBlock Text="Appointment Date"/>
-
                                 <TextBox x:Name="AppointmentDateTextBox"
                                          PlaceholderText="Example: 03/10/2026"/>
+
+                                <TextBlock Text="Appointment Time"/>
+                                <TextBox x:Name="AppointmentTimeTextBox"
+                                         PlaceholderText="Example: 10:30 AM"/>
 
                                 <Button Content="Add Appointment"
                                         Width="150"
