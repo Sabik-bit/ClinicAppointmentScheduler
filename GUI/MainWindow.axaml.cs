@@ -3,15 +3,20 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using System;
+using System.Collections.Generic;
 
 namespace GUI;
 
 public partial class MainWindow : Window
 {
+    // Store IDs while the program is running
+    private List<string> patientIds = new List<string>();
+    private List<string> doctorIds = new List<string>();
+    private List<string> appointmentIds = new List<string>();
+
     public MainWindow()
     {
         InitializeComponent();
-
         ShowDashboard();
     }
 
@@ -70,10 +75,10 @@ public partial class MainWindow : Window
 
     private void AddPatientButton_Click(object? sender, RoutedEventArgs e)
     {
-        string patientId = PatientIdTextBox.Text ?? "";
-        string patientName = PatientNameTextBox.Text ?? "";
-        string patientPhone = PatientPhoneTextBox.Text ?? "";
-        string patientEmail = PatientEmailTextBox.Text ?? "";
+        string patientId = PatientIdTextBox.Text?.Trim() ?? "";
+        string patientName = PatientNameTextBox.Text?.Trim() ?? "";
+        string patientPhone = PatientPhoneTextBox.Text?.Trim() ?? "";
+        string patientEmail = PatientEmailTextBox.Text?.Trim() ?? "";
 
         if (patientId == "" || patientName == "")
         {
@@ -83,6 +88,19 @@ public partial class MainWindow : Window
             PatientStatusText.Foreground = Brushes.Red;
             return;
         }
+
+        // Check duplicate patient ID
+        if (patientIds.Contains(patientId))
+        {
+            PatientStatusText.Text =
+                "Patient ID already exists.";
+
+            PatientStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        // Save the new ID
+        patientIds.Add(patientId);
 
         NoPatientsText.IsVisible = false;
 
@@ -138,9 +156,9 @@ public partial class MainWindow : Window
 
     private void AddDoctorButton_Click(object? sender, RoutedEventArgs e)
     {
-        string doctorId = DoctorIdTextBox.Text ?? "";
-        string doctorName = DoctorNameTextBox.Text ?? "";
-        string speciality = DoctorSpecialityTextBox.Text ?? "";
+        string doctorId = DoctorIdTextBox.Text?.Trim() ?? "";
+        string doctorName = DoctorNameTextBox.Text?.Trim() ?? "";
+        string speciality = DoctorSpecialityTextBox.Text?.Trim() ?? "";
 
         if (doctorId == "" || doctorName == "")
         {
@@ -150,6 +168,19 @@ public partial class MainWindow : Window
             DoctorStatusText.Foreground = Brushes.Red;
             return;
         }
+
+        // Check duplicate doctor ID
+        if (doctorIds.Contains(doctorId))
+        {
+            DoctorStatusText.Text =
+                "Doctor ID already exists.";
+
+            DoctorStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        // Save the new ID
+        doctorIds.Add(doctorId);
 
         NoDoctorsText.IsVisible = false;
 
@@ -199,18 +230,17 @@ public partial class MainWindow : Window
     private void AddAppointmentButton_Click(object? sender, RoutedEventArgs e)
     {
         string appointmentId =
-            AppointmentIdTextBox.Text ?? "";
+            AppointmentIdTextBox.Text?.Trim() ?? "";
 
         string patientName =
-            AppointmentPatientTextBox.Text ?? "";
+            AppointmentPatientTextBox.Text?.Trim() ?? "";
 
         string doctorName =
-            AppointmentDoctorTextBox.Text ?? "";
+            AppointmentDoctorTextBox.Text?.Trim() ?? "";
 
         string appointmentDate =
-            AppointmentDateTextBox.Text ?? "";
+            AppointmentDateTextBox.Text?.Trim() ?? "";
 
-        // Check if all fields are completed
         if (appointmentId == "" ||
             patientName == "" ||
             doctorName == "" ||
@@ -223,7 +253,17 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check if the date entered is valid
+        // Check duplicate appointment ID
+        if (appointmentIds.Contains(appointmentId))
+        {
+            AppointmentStatusText.Text =
+                "Appointment ID already exists.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        // Check appointment date
         DateTime validDate;
 
         if (!DateTime.TryParse(appointmentDate, out validDate))
@@ -234,6 +274,9 @@ public partial class MainWindow : Window
             AppointmentStatusText.Foreground = Brushes.Red;
             return;
         }
+
+        // Save the new appointment ID
+        appointmentIds.Add(appointmentId);
 
         NoAppointmentsText.IsVisible = false;
 
