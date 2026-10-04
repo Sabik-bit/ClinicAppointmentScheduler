@@ -35,7 +35,6 @@ public partial class MainWindow : Window
     private void ShowDashboard()
     {
         HideAllPanels();
-
         DashboardPanel.IsVisible = true;
         Title = "Clinic Appointment Scheduler";
     }
@@ -48,7 +47,6 @@ public partial class MainWindow : Window
     private void PatientsButton_Click(object? sender, RoutedEventArgs e)
     {
         HideAllPanels();
-
         PatientsPanel.IsVisible = true;
         Title = "Clinic Appointment Scheduler - Patients";
     }
@@ -56,7 +54,6 @@ public partial class MainWindow : Window
     private void DoctorsButton_Click(object? sender, RoutedEventArgs e)
     {
         HideAllPanels();
-
         DoctorsPanel.IsVisible = true;
         Title = "Clinic Appointment Scheduler - Doctors";
     }
@@ -64,7 +61,6 @@ public partial class MainWindow : Window
     private void AppointmentsButton_Click(object? sender, RoutedEventArgs e)
     {
         HideAllPanels();
-
         AppointmentsPanel.IsVisible = true;
         Title = "Clinic Appointment Scheduler - Appointments";
     }
@@ -89,6 +85,7 @@ public partial class MainWindow : Window
             return;
         }
 
+        // Prevent duplicate patient IDs
         if (patientIds.Contains(patientId))
         {
             PatientStatusText.Text =
@@ -167,6 +164,7 @@ public partial class MainWindow : Window
             return;
         }
 
+        // Prevent duplicate doctor IDs
         if (doctorIds.Contains(doctorId))
         {
             DoctorStatusText.Text =
@@ -254,7 +252,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check duplicate ID
+        // Prevent duplicate appointment IDs
         if (appointmentIds.Contains(appointmentId))
         {
             AppointmentStatusText.Text =
@@ -264,7 +262,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check date
+        // Validate date
         DateTime validDate;
 
         if (!DateTime.TryParse(appointmentDate, out validDate))
@@ -276,7 +274,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Check time
+        // Validate time
         DateTime validTime;
 
         if (!DateTime.TryParse(appointmentTime, out validTime))
@@ -326,6 +324,14 @@ public partial class MainWindow : Window
         {
             Text = "Time: " + validTime.ToShortTimeString(),
             Foreground = Brushes.Black
+        });
+
+        // NEW: appointment status
+        appointmentInformation.Children.Add(new TextBlock
+        {
+            Text = "Status: Scheduled",
+            FontWeight = FontWeight.Bold,
+            Foreground = Brushes.Green
         });
 
         Border appointmentCard = new Border
