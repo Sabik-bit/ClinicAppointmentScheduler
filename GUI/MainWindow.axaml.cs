@@ -48,51 +48,68 @@ public partial class MainWindow : Window
     {
         HideAllPanels();
         PatientsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Patients";
+        RefreshPatientList();
     }
 
     private void DoctorsButton_Click(object? sender, RoutedEventArgs e)
     {
         HideAllPanels();
         DoctorsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Doctors";
+        RefreshDoctorList();
     }
 
     private void AppointmentsButton_Click(object? sender, RoutedEventArgs e)
     {
         HideAllPanels();
         AppointmentsPanel.IsVisible = true;
+        Title = "Clinic Appointment Scheduler - Appointments";
+        RefreshAppointmentList();
     }
 
     // =========================
-    // PATIENT
+    // PATIENTS
     // =========================
 
     private void AddPatientButton_Click(object? sender, RoutedEventArgs e)
     {
+        if (!int.TryParse(PatientIdTextBox.Text, out int patientId))
+        {
+            PatientStatusText.Text = "Please enter a valid Patient ID.";
+            PatientStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        string name = PatientNameTextBox.Text?.Trim() ?? "";
+        string phone = PatientPhoneTextBox.Text?.Trim() ?? "";
+        string email = PatientEmailTextBox.Text?.Trim() ?? "";
+
+        if (name == "" || phone == "")
+        {
+            PatientStatusText.Text = "Please enter patient name and phone.";
+            PatientStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (patientService.FindPatient(patientId) != null)
+        {
+            PatientStatusText.Text = "Patient ID already exists.";
+            PatientStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
         try
         {
-            if (!int.TryParse(PatientIdTextBox.Text, out int patientId))
-            {
-                throw new ArgumentException("Patient ID must be a number.");
-            }
-
-            string name = PatientNameTextBox.Text?.Trim() ?? "";
-            string phone = PatientPhoneTextBox.Text?.Trim() ?? "";
-            string email = PatientEmailTextBox.Text?.Trim() ?? "";
-
-            if (patientService.FindPatient(patientId) != null)
-            {
-                throw new InvalidOperationException(
-                    "Patient ID already exists.");
-            }
-
-            Patient patient =
-                new Patient(patientId, name, phone, email);
+            Patient patient = new Patient(
+                patientId,
+                name,
+                phone,
+                email);
 
             patientService.AddPatient(patient);
 
-            PatientStatusText.Text =
-                "Patient added successfully.";
-
+            PatientStatusText.Text = "Patient added successfully.";
             PatientStatusText.Foreground = Brushes.Green;
 
             PatientIdTextBox.Text = "";
@@ -100,7 +117,7 @@ public partial class MainWindow : Window
             PatientPhoneTextBox.Text = "";
             PatientEmailTextBox.Text = "";
 
-            RefreshPatients();
+            RefreshPatientList();
         }
         catch (Exception ex)
         {
@@ -109,81 +126,89 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RefreshPatients()
+    private void RefreshPatientList()
     {
         PatientListPanel.Children.Clear();
 
-        if (patientService.GetAllPatients().Count == 0)
-        {
-            PatientListPanel.Children.Add(new TextBlock
-            {
-                Text = "No patients registered yet."
-            });
-
-            return;
-        }
-
         foreach (Patient patient in patientService.GetAllPatients())
         {
-            Border card = new Border
+            StackPanel patientInfo = new StackPanel
+            {
+                Spacing = 4
+            };
+
+            patientInfo.Children.Add(new TextBlock
+            {
+                Text = patient.FullName + " (ID: " + patient.PatientId + ")",
+                FontWeight = FontWeight.Bold,
+                Foreground = Brushes.Black
+            });
+
+            patientInfo.Children.Add(new TextBlock
+            {
+                Text = "Phone: " + patient.Phone,
+                Foreground = Brushes.Black
+            });
+
+            patientInfo.Children.Add(new TextBlock
+            {
+                Text = "Email: " + patient.Email,
+                Foreground = Brushes.Black
+            });
+
+            Border patientCard = new Border
             {
                 Background = Brushes.White,
-                CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(12),
-                Margin = new Thickness(0, 4)
+                CornerRadius = new CornerRadius(8),
+                Padding = new Thickness(15),
+                Margin = new Thickness(0, 5),
+                Child = patientInfo
             };
 
-            card.Child = new TextBlock
-            {
-                Text = patient.GetDetails(),
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            PatientListPanel.Children.Add(card);
+            PatientListPanel.Children.Add(patientCard);
         }
     }
 
     // =========================
-    // DOCTOR
+    // DOCTORS
     // =========================
 
     private void AddDoctorButton_Click(object? sender, RoutedEventArgs e)
     {
+        if (!int.TryParse(DoctorIdTextBox.Text, out int doctorId))
+        {
+            DoctorStatusText.Text = "Please enter a valid Doctor ID.";
+            DoctorStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        string name = DoctorNameTextBox.Text?.Trim() ?? "";
+        string speciality = DoctorSpecialityTextBox.Text?.Trim() ?? "";
+
+        if (name == "" || speciality == "")
+        {
+            DoctorStatusText.Text = "Please complete all doctor fields.";
+            DoctorStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
         try
         {
-            if (!int.TryParse(DoctorIdTextBox.Text, out int doctorId))
-            {
-                throw new ArgumentException(
-                    "Doctor ID must be a number.");
-            }
-
-            string name =
-                DoctorNameTextBox.Text?.Trim() ?? "";
-
-            string speciality =
-                DoctorSpecialityTextBox.Text?.Trim() ?? "";
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException(
-                    "Doctor name cannot be empty.");
-            }
-
-            Doctor doctor =
-                new Doctor(doctorId, name, speciality);
+            Doctor doctor = new Doctor(
+                doctorId,
+                name,
+                speciality);
 
             doctorService.AddDoctor(doctor);
 
-            DoctorStatusText.Text =
-                "Doctor added successfully.";
-
+            DoctorStatusText.Text = "Doctor added successfully.";
             DoctorStatusText.Foreground = Brushes.Green;
 
             DoctorIdTextBox.Text = "";
             DoctorNameTextBox.Text = "";
             DoctorSpecialityTextBox.Text = "";
 
-            RefreshDoctors();
+            RefreshDoctorList();
         }
         catch (Exception ex)
         {
@@ -192,127 +217,149 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RefreshDoctors()
+    private void RefreshDoctorList()
     {
         DoctorListPanel.Children.Clear();
 
-        if (doctorService.GetAllDoctors().Count == 0)
-        {
-            DoctorListPanel.Children.Add(new TextBlock
-            {
-                Text = "No doctors registered yet."
-            });
-
-            return;
-        }
-
         foreach (Doctor doctor in doctorService.GetAllDoctors())
         {
-            Border card = new Border
+            StackPanel doctorInfo = new StackPanel
+            {
+                Spacing = 4
+            };
+
+            doctorInfo.Children.Add(new TextBlock
+            {
+                Text = doctor.FullName + " (ID: " + doctor.DoctorId + ")",
+                FontWeight = FontWeight.Bold,
+                Foreground = Brushes.Black
+            });
+
+            doctorInfo.Children.Add(new TextBlock
+            {
+                Text = "Speciality: " + doctor.Speciality,
+                Foreground = Brushes.Black
+            });
+
+            Border doctorCard = new Border
             {
                 Background = Brushes.White,
-                CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(12),
-                Margin = new Thickness(0, 4)
+                CornerRadius = new CornerRadius(8),
+                Padding = new Thickness(15),
+                Margin = new Thickness(0, 5),
+                Child = doctorInfo
             };
 
-            card.Child = new TextBlock
-            {
-                Text = doctor.GetDetails(),
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            DoctorListPanel.Children.Add(card);
+            DoctorListPanel.Children.Add(doctorCard);
         }
     }
 
     // =========================
-    // BOOK APPOINTMENT
+    // APPOINTMENTS
     // =========================
 
-    private void AddAppointmentButton_Click(
-        object? sender,
-        RoutedEventArgs e)
+    private void AddAppointmentButton_Click(object? sender, RoutedEventArgs e)
     {
+        if (!int.TryParse(
+            AppointmentIdTextBox.Text,
+            out int appointmentId))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid Appointment ID.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (!int.TryParse(
+            AppointmentPatientIdTextBox.Text,
+            out int patientId))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid Patient ID.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (!int.TryParse(
+            AppointmentDoctorIdTextBox.Text,
+            out int doctorId))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid Doctor ID.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (appointmentService.FindAppointment(appointmentId) != null)
+        {
+            AppointmentStatusText.Text =
+                "Appointment ID already exists.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        Patient? patient = patientService.FindPatient(patientId);
+        Doctor? doctor = doctorService.FindDoctor(doctorId);
+
+        if (patient == null)
+        {
+            AppointmentStatusText.Text =
+                "Patient ID was not found.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (doctor == null)
+        {
+            AppointmentStatusText.Text =
+                "Doctor ID was not found.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        string date =
+            AppointmentDateTextBox.Text?.Trim() ?? "";
+
+        string time =
+            AppointmentTimeTextBox.Text?.Trim() ?? "";
+
+        string reason =
+            AppointmentReasonTextBox.Text?.Trim() ?? "";
+
+        if (!DateTime.TryParse(
+            date + " " + time,
+            out DateTime appointmentDateTime))
+        {
+            AppointmentStatusText.Text =
+                "Please enter a valid date and time.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (reason == "")
+        {
+            AppointmentStatusText.Text =
+                "Please enter an appointment reason.";
+
+            AppointmentStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
         try
         {
-            if (!int.TryParse(
-                AppointmentIdTextBox.Text,
-                out int appointmentId))
-            {
-                throw new ArgumentException(
-                    "Appointment ID must be a number.");
-            }
-
-            if (appointmentService.FindAppointment(appointmentId) != null)
-            {
-                throw new InvalidOperationException(
-                    "Appointment ID already exists.");
-            }
-
-            if (!int.TryParse(
-                AppointmentPatientIdTextBox.Text,
-                out int patientId))
-            {
-                throw new ArgumentException(
-                    "Patient ID must be a number.");
-            }
-
-            if (!int.TryParse(
-                AppointmentDoctorIdTextBox.Text,
-                out int doctorId))
-            {
-                throw new ArgumentException(
-                    "Doctor ID must be a number.");
-            }
-
-            Patient? patient =
-                patientService.FindPatient(patientId);
-
-            if (patient == null)
-            {
-                throw new InvalidOperationException(
-                    "Patient was not found. Register the patient first.");
-            }
-
-            Doctor? doctor =
-                doctorService.FindDoctor(doctorId);
-
-            if (doctor == null)
-            {
-                throw new InvalidOperationException(
-                    "Doctor was not found. Register the doctor first.");
-            }
-
-            string date =
-                AppointmentDateTextBox.Text?.Trim() ?? "";
-
-            string time =
-                AppointmentTimeTextBox.Text?.Trim() ?? "";
-
-            if (!DateTime.TryParse(
-                date + " " + time,
-                out DateTime appointmentDateTime))
-            {
-                throw new ArgumentException(
-                    "Please enter a valid appointment date and time.");
-            }
-
-            string reason =
-                AppointmentReasonTextBox.Text?.Trim() ?? "";
-
-            if (string.IsNullOrWhiteSpace(reason))
-            {
-                reason = "General appointment";
-            }
-
-            Appointment appointment =
-                new Appointment(
-                    appointmentId,
-                    patient,
-                    doctor,
-                    appointmentDateTime,
-                    reason);
+            Appointment appointment = new Appointment(
+                appointmentId,
+                patient,
+                doctor,
+                appointmentDateTime,
+                reason);
 
             appointmentService.AddAppointment(appointment);
 
@@ -328,12 +375,98 @@ public partial class MainWindow : Window
             AppointmentTimeTextBox.Text = "";
             AppointmentReasonTextBox.Text = "";
 
-            RefreshAppointments();
+            RefreshAppointmentList();
         }
         catch (Exception ex)
         {
             AppointmentStatusText.Text = ex.Message;
             AppointmentStatusText.Foreground = Brushes.Red;
+        }
+    }
+
+    private void RefreshAppointmentList()
+    {
+        AppointmentListPanel.Children.Clear();
+
+        foreach (Appointment appointment
+                 in appointmentService.GetAllAppointments())
+        {
+            StackPanel appointmentInfo = new StackPanel
+            {
+                Spacing = 5
+            };
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Appointment ID: " +
+                       appointment.AppointmentId,
+                FontWeight = FontWeight.Bold,
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Patient: " +
+                       appointment.Patient.FullName +
+                       " (ID: " +
+                       appointment.Patient.PatientId +
+                       ")",
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Doctor: " +
+                       appointment.Doctor.FullName +
+                       " (ID: " +
+                       appointment.Doctor.DoctorId +
+                       ")",
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Date: " +
+                       appointment.AppointmentDateTime
+                           .ToShortDateString(),
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Time: " +
+                       appointment.AppointmentDateTime
+                           .ToShortTimeString(),
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Reason: " + appointment.Reason,
+                Foreground = Brushes.Black
+            });
+
+            appointmentInfo.Children.Add(new TextBlock
+            {
+                Text = "Status: " + appointment.Status,
+                FontWeight = FontWeight.Bold,
+                Foreground =
+                    appointment.Status == "Cancelled"
+                    ? Brushes.Red
+                    : Brushes.Green
+            });
+
+            Border appointmentCard = new Border
+            {
+                Background = Brushes.White,
+                CornerRadius = new CornerRadius(8),
+                Padding = new Thickness(15),
+                Margin = new Thickness(0, 5),
+                Child = appointmentInfo
+            };
+
+            AppointmentListPanel.Children.Add(
+                appointmentCard);
         }
     }
 
@@ -345,39 +478,50 @@ public partial class MainWindow : Window
         object? sender,
         RoutedEventArgs e)
     {
-        try
+        if (!int.TryParse(
+            CancelAppointmentIdTextBox.Text,
+            out int appointmentId))
         {
-            if (!int.TryParse(
-                CancelAppointmentIdTextBox.Text,
-                out int appointmentId))
-            {
-                throw new ArgumentException(
-                    "Enter a valid appointment ID.");
-            }
-
-            bool cancelled =
-                appointmentService.CancelAppointment(appointmentId);
-
-            if (!cancelled)
-            {
-                throw new InvalidOperationException(
-                    "Appointment was not found.");
-            }
-
             CancelStatusText.Text =
-                "Appointment cancelled successfully.";
+                "Please enter a valid Appointment ID.";
 
-            CancelStatusText.Foreground = Brushes.Green;
-
-            CancelAppointmentIdTextBox.Text = "";
-
-            RefreshAppointments();
-        }
-        catch (Exception ex)
-        {
-            CancelStatusText.Text = ex.Message;
             CancelStatusText.Foreground = Brushes.Red;
+            return;
         }
+
+        Appointment? appointment =
+            appointmentService.FindAppointment(
+                appointmentId);
+
+        if (appointment == null)
+        {
+            CancelStatusText.Text =
+                "Appointment was not found.";
+
+            CancelStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (appointment.Status == "Cancelled")
+        {
+            CancelStatusText.Text =
+                "Appointment is already cancelled.";
+
+            CancelStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        appointmentService.CancelAppointment(
+            appointmentId);
+
+        CancelStatusText.Text =
+            "Appointment cancelled successfully.";
+
+        CancelStatusText.Foreground = Brushes.Green;
+
+        CancelAppointmentIdTextBox.Text = "";
+
+        RefreshAppointmentList();
     }
 
     // =========================
@@ -388,166 +532,90 @@ public partial class MainWindow : Window
         object? sender,
         RoutedEventArgs e)
     {
+        if (!int.TryParse(
+            RescheduleAppointmentIdTextBox.Text,
+            out int appointmentId))
+        {
+            RescheduleStatusText.Text =
+                "Please enter a valid Appointment ID.";
+
+            RescheduleStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        Appointment? appointment =
+            appointmentService.FindAppointment(
+                appointmentId);
+
+        if (appointment == null)
+        {
+            RescheduleStatusText.Text =
+                "Appointment was not found.";
+
+            RescheduleStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (appointment.Status == "Cancelled")
+        {
+            RescheduleStatusText.Text =
+                "Cancelled appointments cannot be rescheduled.";
+
+            RescheduleStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
+        string newDate =
+            RescheduleDateTextBox.Text?.Trim() ?? "";
+
+        string newTime =
+            RescheduleTimeTextBox.Text?.Trim() ?? "";
+
+        if (!DateTime.TryParse(
+            newDate + " " + newTime,
+            out DateTime newDateTime))
+        {
+            RescheduleStatusText.Text =
+                "Please enter a valid new date and time.";
+
+            RescheduleStatusText.Foreground = Brushes.Red;
+            return;
+        }
+
         try
         {
-            if (!int.TryParse(
-                RescheduleAppointmentIdTextBox.Text,
-                out int appointmentId))
-            {
-                throw new ArgumentException(
-                    "Enter a valid appointment ID.");
-            }
-
-            string newDate =
-                RescheduleDateTextBox.Text?.Trim() ?? "";
-
-            string newTime =
-                RescheduleTimeTextBox.Text?.Trim() ?? "";
-
-            if (!DateTime.TryParse(
-                newDate + " " + newTime,
-                out DateTime newDateTime))
-            {
-                throw new ArgumentException(
-                    "Enter a valid new date and time.");
-            }
-
-            bool rescheduled =
+            bool result =
                 appointmentService.RescheduleAppointment(
                     appointmentId,
                     newDateTime);
 
-            if (!rescheduled)
+            if (result)
             {
-                throw new InvalidOperationException(
-                    "Appointment was not found.");
+                RescheduleStatusText.Text =
+                    "Appointment rescheduled successfully.";
+
+                RescheduleStatusText.Foreground =
+                    Brushes.Green;
+
+                RescheduleAppointmentIdTextBox.Text = "";
+                RescheduleDateTextBox.Text = "";
+                RescheduleTimeTextBox.Text = "";
+
+                RefreshAppointmentList();
             }
+            else
+            {
+                RescheduleStatusText.Text =
+                    "Appointment was not found.";
 
-            RescheduleStatusText.Text =
-                "Appointment rescheduled successfully.";
-
-            RescheduleStatusText.Foreground = Brushes.Green;
-
-            RescheduleAppointmentIdTextBox.Text = "";
-            RescheduleDateTextBox.Text = "";
-            RescheduleTimeTextBox.Text = "";
-
-            RefreshAppointments();
+                RescheduleStatusText.Foreground =
+                    Brushes.Red;
+            }
         }
         catch (Exception ex)
         {
             RescheduleStatusText.Text = ex.Message;
             RescheduleStatusText.Foreground = Brushes.Red;
-        }
-    }
-
-    // =========================
-    // DISPLAY APPOINTMENTS
-    // =========================
-
-    private void RefreshAppointments()
-    {
-        AppointmentListPanel.Children.Clear();
-
-        if (appointmentService.GetAllAppointments().Count == 0)
-        {
-            AppointmentListPanel.Children.Add(new TextBlock
-            {
-                Text = "No appointments booked yet."
-            });
-
-            return;
-        }
-
-        foreach (
-            Appointment appointment
-            in appointmentService.GetAllAppointments())
-        {
-            StackPanel information = new StackPanel
-            {
-                Spacing = 4
-            };
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Appointment ID: " +
-                    appointment.AppointmentId,
-                FontWeight = FontWeight.Bold
-            });
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Patient: " +
-                    appointment.Patient.FullName +
-                    " (ID: " +
-                    appointment.Patient.PatientId +
-                    ")"
-            });
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Doctor: " +
-                    appointment.Doctor.FullName +
-                    " (ID: " +
-                    appointment.Doctor.DoctorId +
-                    ")"
-            });
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Date: " +
-                    appointment.AppointmentDateTime.ToShortDateString()
-            });
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Time: " +
-                    appointment.AppointmentDateTime.ToShortTimeString()
-            });
-
-            information.Children.Add(new TextBlock
-            {
-                Text =
-                    "Reason: " +
-                    appointment.Reason
-            });
-
-            TextBlock status = new TextBlock
-            {
-                Text =
-                    "Status: " +
-                    appointment.Status,
-                FontWeight = FontWeight.Bold
-            };
-
-            if (appointment.Status == "Cancelled")
-            {
-                status.Foreground = Brushes.Red;
-            }
-            else
-            {
-                status.Foreground = Brushes.Green;
-            }
-
-            information.Children.Add(status);
-
-            Border card = new Border
-            {
-                Background = Brushes.White,
-                BorderBrush = Brushes.LightGray,
-                BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(12),
-                Margin = new Thickness(0, 4),
-                Child = information
-            };
-
-            AppointmentListPanel.Children.Add(card);
         }
     }
 }
