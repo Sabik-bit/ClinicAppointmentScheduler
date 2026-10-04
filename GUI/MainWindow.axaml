@@ -2,38 +2,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="GUI.MainWindow"
         Title="Clinic Appointment Scheduler"
-        Width="900"
-        Height="600"
-        Background="#F8FAFC">
+        Width="1050"
+        Height="720"
+        Background="#F1F5F9">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="80,*">
 
         <!-- HEADER -->
         <Border Grid.Row="0"
-                Background="#2563EB"
-                Padding="20">
+                Background="#2563EB">
+
             <TextBlock Text="Clinic Appointment Scheduler"
-                       FontSize="26"
-                       FontWeight="Bold"
                        Foreground="White"
-                       HorizontalAlignment="Center"/>
+                       FontSize="30"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
         </Border>
 
-        <!-- MAIN AREA -->
-        <Grid Grid.Row="1" ColumnDefinitions="220,*">
+        <Grid Grid.Row="1"
+              ColumnDefinitions="220,*">
 
-            <!-- LEFT MENU -->
+            <!-- MENU -->
             <Border Grid.Column="0"
                     Background="#1E293B"
-                    Padding="15">
+                    Padding="20">
 
                 <StackPanel Spacing="15">
 
                     <TextBlock Text="MENU"
-                               FontSize="14"
-                               FontWeight="Bold"
-                               Foreground="#94A3B8"
-                               Margin="5,5,0,5"/>
+                               Foreground="#CBD5E1"
+                               FontSize="15"
+                               FontWeight="Bold"/>
 
                     <Button Content="Patients"
                             Height="45"
@@ -71,167 +72,188 @@
 
             </Border>
 
-            <!-- RIGHT CONTENT -->
-            <Grid Grid.Column="1">
+            <!-- CONTENT -->
+            <Grid Grid.Column="1"
+                  Background="#F8FAFC">
 
                 <!-- DASHBOARD -->
-                <StackPanel x:Name="DashboardPanel"
-                            Margin="30"
-                            Spacing="20">
+                <ScrollViewer x:Name="DashboardPanel">
 
-                    <TextBlock Text="Dashboard"
-                               FontSize="28"
-                               FontWeight="Bold"
-                               Foreground="#0F172A"/>
+                    <StackPanel Margin="35"
+                                Spacing="22">
 
-                    <TextBlock Text="Welcome to the Clinic Appointment Scheduler"
-                               FontSize="18"
-                               Foreground="#475569"/>
+                        <TextBlock Text="Dashboard"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   Foreground="#0F172A"/>
 
-                    <Border Background="White"
-                            BorderBrush="#E2E8F0"
-                            BorderThickness="1"
-                            CornerRadius="10"
-                            Padding="25">
+                        <TextBlock Text="Welcome to the Clinic Appointment Scheduler"
+                                   FontSize="18"
+                                   Foreground="#475569"/>
 
-                        <StackPanel Spacing="10">
+                        <Border Background="White"
+                                BorderBrush="#CBD5E1"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="25">
 
-                            <TextBlock Text="Appointment Management System"
-                                       FontSize="20"
-                                       FontWeight="Bold"
-                                       Foreground="#1E293B"/>
+                            <StackPanel Spacing="8">
 
-                            <TextBlock Text="Use the menu to manage patients, doctors and clinic appointments."
-                                       Foreground="#64748B"
-                                       TextWrapping="Wrap"/>
-
-                        </StackPanel>
-
-                    </Border>
-
-                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15">
-
-                        <Border Grid.Column="0"
-                                Background="#EFF6FF"
-                                CornerRadius="8"
-                                Padding="15">
-                            <StackPanel>
-                                <TextBlock Text="Patients"
+                                <TextBlock Text="Appointment Management System"
+                                           FontSize="22"
                                            FontWeight="Bold"
-                                           Foreground="#1E40AF"/>
-                                <TextBlock Text="Manage patient records"
-                                           Foreground="#475569"
-                                           FontSize="13"/>
+                                           Foreground="#0F172A"/>
+
+                                <TextBlock Text="Manage patients, doctors and clinic appointments."
+                                           FontSize="15"
+                                           Foreground="#475569"/>
+
                             </StackPanel>
+
                         </Border>
 
-                        <Border Grid.Column="1"
-                                Background="#F0FDF4"
-                                CornerRadius="8"
-                                Padding="15">
-                            <StackPanel>
-                                <TextBlock Text="Doctors"
-                                           FontWeight="Bold"
-                                           Foreground="#166534"/>
-                                <TextBlock Text="Manage clinic doctors"
-                                           Foreground="#475569"
-                                           FontSize="13"/>
-                            </StackPanel>
-                        </Border>
+                        <Grid ColumnDefinitions="*,*,*"
+                              ColumnSpacing="15">
 
-                        <Border Grid.Column="2"
-                                Background="#FFF7ED"
-                                CornerRadius="8"
-                                Padding="15">
-                            <StackPanel>
-                                <TextBlock Text="Appointments"
-                                           FontWeight="Bold"
-                                           Foreground="#9A3412"/>
-                                <TextBlock Text="Schedule appointments"
-                                           Foreground="#475569"
-                                           FontSize="13"/>
-                            </StackPanel>
-                        </Border>
+                            <Border Grid.Column="0"
+                                    Background="#DBEAFE"
+                                    CornerRadius="10"
+                                    Padding="20">
 
-                    </Grid>
+                                <StackPanel>
+                                    <TextBlock Text="Patients"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Foreground="#1D4ED8"/>
 
-                </StackPanel>
+                                    <TextBlock Text="Manage patient records"
+                                               Foreground="#1E3A8A"/>
+                                </StackPanel>
+
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Background="#DCFCE7"
+                                    CornerRadius="10"
+                                    Padding="20">
+
+                                <StackPanel>
+                                    <TextBlock Text="Doctors"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Foreground="#15803D"/>
+
+                                    <TextBlock Text="Manage clinic doctors"
+                                               Foreground="#166534"/>
+                                </StackPanel>
+
+                            </Border>
+
+                            <Border Grid.Column="2"
+                                    Background="#FFEDD5"
+                                    CornerRadius="10"
+                                    Padding="20">
+
+                                <StackPanel>
+                                    <TextBlock Text="Appointments"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Foreground="#C2410C"/>
+
+                                    <TextBlock Text="Book and manage appointments"
+                                               Foreground="#9A3412"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                            </Border>
+
+                        </Grid>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
 
                 <!-- PATIENTS -->
                 <ScrollViewer x:Name="PatientsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30" Spacing="15">
+                    <StackPanel Margin="35"
+                                Spacing="20">
 
                         <TextBlock Text="Patient Management"
-                                   FontSize="28"
+                                   FontSize="30"
                                    FontWeight="Bold"
                                    Foreground="#0F172A"/>
 
-                        <TextBlock Text="Add and manage clinic patient records."
-                                   FontSize="16"
-                                   Foreground="#64748B"/>
+                        <TextBlock Text="Register and view clinic patients."
+                                   Foreground="#475569"
+                                   FontSize="16"/>
 
                         <Border Background="White"
-                                BorderBrush="#E2E8F0"
+                                BorderBrush="#CBD5E1"
                                 BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="20">
+                                CornerRadius="10"
+                                Padding="22">
 
                             <StackPanel Spacing="10">
 
-                                <TextBlock Text="Add New Patient"
+                                <TextBlock Text="Register New Patient"
                                            FontSize="20"
                                            FontWeight="Bold"
-                                           Foreground="#1E293B"/>
+                                           Foreground="#0F172A"/>
 
-                                <TextBlock Text="Patient ID"/>
+                                <TextBlock Text="Patient ID"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="PatientIdTextBox"
-                                         PlaceholderText="Enter patient ID"/>
+                                         PlaceholderText="Example: 100"/>
 
-                                <TextBlock Text="Full Name"/>
+                                <TextBlock Text="Full Name"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="PatientNameTextBox"
                                          PlaceholderText="Enter full name"/>
 
-                                <TextBlock Text="Phone"/>
+                                <TextBlock Text="Phone"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="PatientPhoneTextBox"
                                          PlaceholderText="Enter phone number"/>
 
-                                <TextBlock Text="Email"/>
+                                <TextBlock Text="Email"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="PatientEmailTextBox"
                                          PlaceholderText="Enter email address"/>
 
                                 <Button Content="Add Patient"
-                                        Width="120"
+                                        Width="140"
+                                        Height="40"
                                         HorizontalAlignment="Left"
                                         Background="#2563EB"
                                         Foreground="White"
                                         Click="AddPatientButton_Click"/>
 
                                 <TextBlock x:Name="PatientStatusText"
-                                           FontWeight="Bold"/>
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
 
                             </StackPanel>
 
                         </Border>
 
                         <TextBlock Text="Registered Patients"
-                                   FontSize="18"
+                                   FontSize="20"
                                    FontWeight="Bold"
-                                   Foreground="#1E293B"/>
+                                   Foreground="#0F172A"/>
 
-                        <Border Background="#EFF6FF"
-                                CornerRadius="8"
+                        <Border Background="#DBEAFE"
+                                CornerRadius="10"
                                 Padding="15">
 
                             <StackPanel x:Name="PatientListPanel"
-                                        Spacing="8">
-
-                                <TextBlock x:Name="NoPatientsText"
-                                           Text="Patient records will appear here."
-                                           Foreground="#475569"/>
-
-                            </StackPanel>
+                                        Spacing="8"/>
 
                         </Border>
 
@@ -239,77 +261,81 @@
 
                 </ScrollViewer>
 
+
                 <!-- DOCTORS -->
                 <ScrollViewer x:Name="DoctorsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30" Spacing="15">
+                    <StackPanel Margin="35"
+                                Spacing="20">
 
                         <TextBlock Text="Doctor Management"
-                                   FontSize="28"
+                                   FontSize="30"
                                    FontWeight="Bold"
                                    Foreground="#0F172A"/>
 
-                        <TextBlock Text="Add and manage clinic doctors."
-                                   FontSize="16"
-                                   Foreground="#64748B"/>
+                        <TextBlock Text="Register and view clinic doctors."
+                                   Foreground="#475569"
+                                   FontSize="16"/>
 
                         <Border Background="White"
-                                BorderBrush="#E2E8F0"
+                                BorderBrush="#CBD5E1"
                                 BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="20">
+                                CornerRadius="10"
+                                Padding="22">
 
                             <StackPanel Spacing="10">
 
-                                <TextBlock Text="Add New Doctor"
+                                <TextBlock Text="Register New Doctor"
                                            FontSize="20"
                                            FontWeight="Bold"
-                                           Foreground="#1E293B"/>
+                                           Foreground="#0F172A"/>
 
-                                <TextBlock Text="Doctor ID"/>
+                                <TextBlock Text="Doctor ID"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="DoctorIdTextBox"
-                                         PlaceholderText="Enter doctor ID"/>
+                                         PlaceholderText="Example: 200"/>
 
-                                <TextBlock Text="Doctor Name"/>
+                                <TextBlock Text="Doctor Name"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="DoctorNameTextBox"
                                          PlaceholderText="Enter doctor name"/>
 
-                                <TextBlock Text="Speciality"/>
+                                <TextBlock Text="Speciality"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="DoctorSpecialityTextBox"
-                                         PlaceholderText="Enter speciality"/>
+                                         PlaceholderText="Example: General Practice"/>
 
                                 <Button Content="Add Doctor"
-                                        Width="120"
+                                        Width="140"
+                                        Height="40"
                                         HorizontalAlignment="Left"
-                                        Background="#2563EB"
+                                        Background="#16A34A"
                                         Foreground="White"
                                         Click="AddDoctorButton_Click"/>
 
                                 <TextBlock x:Name="DoctorStatusText"
-                                           FontWeight="Bold"/>
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
 
                             </StackPanel>
 
                         </Border>
 
                         <TextBlock Text="Registered Doctors"
-                                   FontSize="18"
+                                   FontSize="20"
                                    FontWeight="Bold"
-                                   Foreground="#1E293B"/>
+                                   Foreground="#0F172A"/>
 
-                        <Border Background="#F0FDF4"
-                                CornerRadius="8"
+                        <Border Background="#DCFCE7"
+                                CornerRadius="10"
                                 Padding="15">
 
                             <StackPanel x:Name="DoctorListPanel"
-                                        Spacing="8">
-
-                                <TextBlock x:Name="NoDoctorsText"
-                                           Text="Doctor records will appear here."
-                                           Foreground="#475569"/>
-
-                            </StackPanel>
+                                        Spacing="8"/>
 
                         </Border>
 
@@ -317,85 +343,191 @@
 
                 </ScrollViewer>
 
+
                 <!-- APPOINTMENTS -->
                 <ScrollViewer x:Name="AppointmentsPanel"
                               IsVisible="False">
 
-                    <StackPanel Margin="30" Spacing="15">
+                    <StackPanel Margin="35"
+                                Spacing="20">
 
                         <TextBlock Text="Appointment Management"
-                                   FontSize="28"
+                                   FontSize="30"
                                    FontWeight="Bold"
                                    Foreground="#0F172A"/>
 
-                        <TextBlock Text="Schedule and view clinic appointments."
-                                   FontSize="16"
-                                   Foreground="#64748B"/>
+                        <TextBlock Text="Book, cancel and reschedule clinic appointments."
+                                   Foreground="#475569"
+                                   FontSize="16"/>
 
+
+                        <!-- BOOK -->
                         <Border Background="White"
-                                BorderBrush="#E2E8F0"
+                                BorderBrush="#CBD5E1"
                                 BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="20">
+                                CornerRadius="10"
+                                Padding="22">
 
                             <StackPanel Spacing="10">
 
-                                <TextBlock Text="Schedule New Appointment"
-                                           FontSize="20"
+                                <TextBlock Text="Book New Appointment"
+                                           FontSize="21"
                                            FontWeight="Bold"
-                                           Foreground="#1E293B"/>
+                                           Foreground="#0F172A"/>
 
-                                <TextBlock Text="Appointment ID"/>
+                                <TextBlock Text="Appointment ID"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="AppointmentIdTextBox"
-                                         PlaceholderText="Enter appointment ID"/>
+                                         PlaceholderText="Example: 500"/>
 
-                                <TextBlock Text="Patient Name"/>
-                                <TextBox x:Name="AppointmentPatientTextBox"
-                                         PlaceholderText="Enter patient name"/>
+                                <TextBlock Text="Patient ID"
+                                           Foreground="#334155"/>
 
-                                <TextBlock Text="Doctor Name"/>
-                                <TextBox x:Name="AppointmentDoctorTextBox"
-                                         PlaceholderText="Enter doctor name"/>
+                                <TextBox x:Name="AppointmentPatientIdTextBox"
+                                         PlaceholderText="Enter registered patient ID"/>
 
-                                <TextBlock Text="Appointment Date"/>
+                                <TextBlock Text="Doctor ID"
+                                           Foreground="#334155"/>
+
+                                <TextBox x:Name="AppointmentDoctorIdTextBox"
+                                         PlaceholderText="Enter registered doctor ID"/>
+
+                                <TextBlock Text="Appointment Date"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="AppointmentDateTextBox"
-                                         PlaceholderText="Example: 03/10/2026"/>
+                                         PlaceholderText="Example: 05/10/2026"/>
 
-                                <TextBlock Text="Appointment Time"/>
+                                <TextBlock Text="Appointment Time"
+                                           Foreground="#334155"/>
+
                                 <TextBox x:Name="AppointmentTimeTextBox"
                                          PlaceholderText="Example: 10:30 AM"/>
 
-                                <Button Content="Add Appointment"
-                                        Width="150"
+                                <TextBlock Text="Reason"
+                                           Foreground="#334155"/>
+
+                                <TextBox x:Name="AppointmentReasonTextBox"
+                                         PlaceholderText="Example: General check-up"/>
+
+                                <Button Content="Book Appointment"
+                                        Width="170"
+                                        Height="40"
                                         HorizontalAlignment="Left"
                                         Background="#2563EB"
                                         Foreground="White"
                                         Click="AddAppointmentButton_Click"/>
 
                                 <TextBlock x:Name="AppointmentStatusText"
-                                           FontWeight="Bold"/>
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
 
                             </StackPanel>
 
                         </Border>
 
-                        <TextBlock Text="Scheduled Appointments"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="#1E293B"/>
 
-                        <Border Background="#FFF7ED"
-                                CornerRadius="8"
-                                Padding="15">
+                        <!-- CANCEL -->
+                        <Border Background="#FEF2F2"
+                                BorderBrush="#FCA5A5"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="22">
 
-                            <StackPanel x:Name="AppointmentListPanel"
-                                        Spacing="8">
+                            <StackPanel Spacing="10">
 
-                                <TextBlock x:Name="NoAppointmentsText"
-                                           Text="Appointments will appear here."
-                                           Foreground="#475569"/>
+                                <TextBlock Text="Cancel Appointment"
+                                           FontSize="21"
+                                           FontWeight="Bold"
+                                           Foreground="#B91C1C"/>
+
+                                <TextBlock Text="Appointment ID"
+                                           Foreground="#7F1D1D"/>
+
+                                <TextBox x:Name="CancelAppointmentIdTextBox"
+                                         PlaceholderText="Enter appointment ID to cancel"/>
+
+                                <Button Content="Cancel Appointment"
+                                        Width="180"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Background="#DC2626"
+                                        Foreground="White"
+                                        Click="CancelAppointmentButton_Click"/>
+
+                                <TextBlock x:Name="CancelStatusText"
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
 
                             </StackPanel>
+
+                        </Border>
+
+
+                        <!-- RESCHEDULE -->
+                        <Border Background="#FFF7ED"
+                                BorderBrush="#FDBA74"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="22">
+
+                            <StackPanel Spacing="10">
+
+                                <TextBlock Text="Reschedule Appointment"
+                                           FontSize="21"
+                                           FontWeight="Bold"
+                                           Foreground="#C2410C"/>
+
+                                <TextBlock Text="Appointment ID"
+                                           Foreground="#7C2D12"/>
+
+                                <TextBox x:Name="RescheduleAppointmentIdTextBox"
+                                         PlaceholderText="Enter appointment ID"/>
+
+                                <TextBlock Text="New Date"
+                                           Foreground="#7C2D12"/>
+
+                                <TextBox x:Name="RescheduleDateTextBox"
+                                         PlaceholderText="Example: 10/10/2026"/>
+
+                                <TextBlock Text="New Time"
+                                           Foreground="#7C2D12"/>
+
+                                <TextBox x:Name="RescheduleTimeTextBox"
+                                         PlaceholderText="Example: 2:30 PM"/>
+
+                                <Button Content="Reschedule Appointment"
+                                        Width="200"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Background="#EA580C"
+                                        Foreground="White"
+                                        Click="RescheduleAppointmentButton_Click"/>
+
+                                <TextBlock x:Name="RescheduleStatusText"
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+
+                        <!-- APPOINTMENT LIST -->
+                        <TextBlock Text="Appointments"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#0F172A"/>
+
+                        <Border Background="#E0F2FE"
+                                BorderBrush="#7DD3FC"
+                                BorderThickness="1"
+                                CornerRadius="10"
+                                Padding="18">
+
+                            <StackPanel x:Name="AppointmentListPanel"
+                                        Spacing="8"/>
 
                         </Border>
 
